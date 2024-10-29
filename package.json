@@ -7,12 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
    "lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
-    "preview": "vite preview",
+    "preview": "vite preview"
   },
 
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm lint "
+      "pre-commit": "lint-staged && npm run lint "
     }
   },
   "dependencies": {
