@@ -7,6 +7,7 @@ export interface CreateStudent {
   cpf: string;
   birthday: string;
   courseId: string;
+  whatsapp_optin: boolean;
 }
 
 

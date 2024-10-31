@@ -44,6 +44,7 @@ export const Form = () => {
       cpf: data.cpf,
       birthday: new Date(data.date).toISOString(),
       courseId: data.courseId, 
+      whatsapp_optin: true,
     };
   
     try {

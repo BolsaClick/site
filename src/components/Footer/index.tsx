@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-4 mt-10">
-      <div className="flex flex-col items-center">
+    <footer className="bg-gray-800 justify-center flex  text-white py-4 mt-10">
+      <div className="flex flex-col p-4 text-center justify-center items-center">
   
         <img 
           src="/images/logo-anhanguera.svg" 
