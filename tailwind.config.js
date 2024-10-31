@@ -19,10 +19,13 @@ module.exports = {
     },
     extend: {
       colors: {
+        'custom-500': '#00B37E',
+  			'custom-600': '#00875F',
+        'anhanguera-500': "#F94D12",
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: '#013125',
+        background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
