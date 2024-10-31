@@ -6,17 +6,17 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './lib/react-query'
 import { Toaster } from 'sonner'
 import GTM from 'react-gtm-module';
-import { env } from './env'
 
 
 
-const gtmId = env.TAG_MANAGER;
+const gtmId = import.meta.env.TAG_MANAGER;
 
 const tagManagerArgs = {
   gtmId: gtmId,
 };
 
 GTM.initialize(tagManagerArgs);
+
 export function App() {
   return (
     <HelmetProvider>
