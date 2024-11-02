@@ -29,7 +29,13 @@ const BuscarCursos = () => {
       }
     });
   };
-
+  const formatCurrency = (value: any) => {
+    const valueWith99 = Math.floor(value) + 0.99;
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(valueWith99);
+  };
   return (
     <div className="bg-zinc-50 w-full flex pb-20 px-6 justify-center">
       <div className="w-full max-w-[1416px] mt-20 flex flex-col items-center">
@@ -53,7 +59,7 @@ const BuscarCursos = () => {
                 key={index}
                 title={course.label}
                 subtitle={courseItem.brand || "Teste"} 
-                price={courseItem.montlyFeeToMin} 
+                price={formatCurrency(courseItem.montlyFeeToMin)} 
                 address={courseItem.unitAddress}
                 unitName={courseItem.unitDistrict}
                 city={courseItem.unitCity}

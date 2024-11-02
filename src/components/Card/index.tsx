@@ -4,7 +4,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 export interface CardProps {
   title?: string; 
   subtitle?: string;
-  price: number;
+  price: string;
   address?: string; // Adicionando o campo de endereço
   city?: string;    // Adicionando o campo de cidade
   state?: string;   // Adicionando o campo de estado
@@ -76,10 +76,7 @@ export const Card = ({
             
             <button className="bg-transparent text-sm text-red-500 font-semibold py-0 mt-3 px-2 border border-red-500 rounded">EAD</button>
             <p className="text-base mt-2">A partir de:</p>
-            <p className="mt-0 text-2xl font-bold text-red-500">{(price / 1).toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              })}</p>
+            <p className="mt-0 text-2xl font-bold text-red-500">R$ {price}</p>
           
           </div>
         </div>

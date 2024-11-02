@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { validarCPF } from "../../../lib/cpf-validate";
 import Input from "../../../components/Input";
-import { maskCPF, maskTelefone } from "../../../lib/mask";
+import { InputMask } from 'primereact/inputmask';
 
 // Schema de validação
 const formSchema = z.object({
@@ -33,7 +33,6 @@ const PersonalInfo = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
@@ -51,7 +50,8 @@ const PersonalInfo = () => {
       state,
       price,
       unity,
-      gender: data.gender === "masculino" ? "M" : "F", // Converte o gênero para M ou F
+      gender: data.gender === "masculino" ? "M" : "F", 
+      phone: data.phone.replace(/\D/g, "")
     };
     console.log("Form Data:", payload);
   
@@ -73,13 +73,14 @@ const PersonalInfo = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* CPF Field */}
           <div className="mb-4">
-            <Input
+            <InputMask
+             mask="999.999.999-99"
               type="text"
               id="cpf"
               placeholder="CPF"
               maxLength={14}
               {...register("cpf")}
-              onChange={(e) => setValue("cpf", maskCPF(e.target.value))}
+             
               className={`border border-gray-300 p-2 rounded-md w-full ${errors.cpf ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {errors.cpf && <p className="text-red-500 text-sm">{errors.cpf.message}</p>}
@@ -108,13 +109,13 @@ const PersonalInfo = () => {
           </div>
 
           <div className="mb-4">
-            <Input
+            <InputMask
               type="text"
               id="phone"
               maxLength={14}
               placeholder="Whatsapp"
               {...register('phone')}
-              onChange={(e) => setValue('phone', maskTelefone(e.target.value))}
+               mask="(99)9 9999-9999"
               className={`border border-gray-300 p-2 rounded-md w-full ${errors.phone ? 'border-red-500' : ''} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
@@ -134,9 +135,10 @@ const PersonalInfo = () => {
 
           {/* Date of Birth Field */}
           <div className="mb-4">
-            <Input
+            <InputMask
               type="text"
               id="birthDate"
+              mask="99/99/9999"
               placeholder="Data de Nascimento (dd/mm/aaaa)"
               {...register("birthDate")}
               className={`border border-gray-300 p-2 rounded-md w-full ${errors.birthDate ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500`}
@@ -192,14 +194,7 @@ const PersonalInfo = () => {
         </form>
 
         {/* Seção para mostrar dados do curso */}
-        <div className="mt-8 p-4 border-t border-gray-300">
-          <h2 className="text-xl font-bold">Detalhes do Curso</h2>
-          <p><strong>Nome do Curso:</strong> {courseName}</p>
-          <p><strong>Unidade:</strong> {unity}</p>
-          <p><strong>Cidade:</strong> {city}</p>
-          <p><strong>Estado:</strong> {state}</p>
-          <p><strong>Preço:</strong> {price}</p>
-        </div>
+     
       </div>
     </div>
   );
