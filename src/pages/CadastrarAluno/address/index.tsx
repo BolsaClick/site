@@ -57,7 +57,6 @@ const AddressPage = () => {
   };
   const renderPageData = modalityFunction();
 
-  console.log(renderPageData)
 
   const onSubmit = async (data: any) => {
 
@@ -137,7 +136,6 @@ const AddressPage = () => {
       whatsapp_optin: true,
       password: password
     }
-    console.log("Cadastro de aluno criado:", studentData);
     try {
       await createStudent(payload)
       await createStudentCogna(studentData);
@@ -146,7 +144,6 @@ const AddressPage = () => {
 
     } catch (error) {
       console.error("Erro ao criar aluno:", error);
-      console.log(error)
       // Verifica se a resposta do erro contém uma mensagem
       toast.error("Erro ao criar aluno, se o problema persistir entre em contato com nosso time");
 
@@ -158,7 +155,6 @@ const AddressPage = () => {
     try {
       const response = await getCep(cep);
       const data = response.data;
-      console.log(data);
 
       setValue('estado', data.state);
       setValue('cidade', data.city);

@@ -18,7 +18,6 @@ const BuscarCursos = () => {
     queryFn: () => getCourseFilter(city.label, city.value, course.value, course.label, modality),
     enabled: !!city?.label && !!city?.value && !!course?.value && !!modality,
   });
-console.log(course.label, 'aqui o course')
   const courses = responseCity?.data || [];
 
   const handleSelectCourse = (courseItem: any) => {

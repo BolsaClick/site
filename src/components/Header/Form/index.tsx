@@ -36,7 +36,6 @@ export const Form = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
-    console.log(data)
     const studentData: CreateStudent = {
       email: data.email,
       name: data.name,

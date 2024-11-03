@@ -33,7 +33,6 @@ const PersonalInfo = () => {
 
 
 
-  console.log(unitId)
 
 
   const navigate = useNavigate();
@@ -45,7 +44,6 @@ const PersonalInfo = () => {
     resolver: zodResolver(formSchema),
   });
   const onSubmit = (data: FormSchema) => {
-    console.log("Form Data:", data);
     
     // Modificação para o payload
     const payload = {
@@ -61,7 +59,6 @@ const PersonalInfo = () => {
       gender: data.gender === "masculino" ? "M" : "F", 
       phone: data.phone.replace(/\D/g, "")
     };
-    console.log("Form Data:", payload);
   
     navigate("/checkout/endereco", { state: payload });
   };

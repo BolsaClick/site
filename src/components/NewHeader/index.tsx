@@ -15,12 +15,12 @@ const formSchema = z.object({
   city: z.object({
     value: z.string(),
     label: z.string(),
-  }).nullable().optional(),
+  }).nullable(),
   course: z.object({
     value: z.string(),
     label: z.string(),
-  }).nullable().optional(),
-  modality: z.enum(["A distância", "Presencial"]).optional(),
+  }).nullable(),
+  modality: z.enum(["A distância", "Presencial"]),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -39,7 +39,7 @@ const Header = () => {
     label: course.course,
   }));
 
-  const { handleSubmit, control } = useForm<FormSchema>({
+  const { handleSubmit, control, watch } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
 
@@ -73,6 +73,17 @@ const Header = () => {
   const handleCityChange = debounce((value) => {
     setSearchCity(value);
   }, 300);
+
+
+  // Obter os valores atuais dos campos para verificar se estão preenchidos
+  // Obter os valores atuais dos campos para verificar se estão preenchidos
+  const modality = watch("modality");
+  const course = watch("course");
+  const city = watch("city");
+
+  // Verificar se todos os campos estão preenchidos
+  const isButtonDisabled = !modality || !course || !city;
+
 
   return (
     <>
@@ -177,7 +188,7 @@ const Header = () => {
               />
 
          <div className="w-full flex items-center justify-center">
-         <button className="px-6 p-2 rounded-lg bg-custom-500 text-zinc-100" type="submit">
+         <button className="px-6 p-2 rounded-lg bg-custom-500 text-zinc-100" type="submit" disabled={isButtonDisabled}>
                 Buscar
               </button>
          </div>

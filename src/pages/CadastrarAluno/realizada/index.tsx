@@ -6,7 +6,6 @@ const SuccessPage = () => {
   const { offerData, studentData } = location.state || {};
 
 
-  console.log(studentData)
   const formatCurrency = (value: any) => {
     const valueWith99 = Math.floor(value) + 0.99;
     return new Intl.NumberFormat('pt-BR', {
@@ -36,7 +35,7 @@ const SuccessPage = () => {
         <br />
         Acesse o site da Anhanguera para acompanhar a sua inscrição e ir para os próximos passos da sua matrícula.
       </p>
-      <Link to="https://www.anhanguera.com/area-do-candidato/login" className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      <Link to="https://www.anhanguera.com/area-do-candidato/login" target="_blank" className="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
         Acompanhar minha inscrição
       </Link>
 
