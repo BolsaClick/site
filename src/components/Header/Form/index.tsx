@@ -36,7 +36,6 @@ export const Form = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
-    console.log(data)
     const studentData: CreateStudent = {
       email: data.email,
       name: data.name,
@@ -66,7 +65,6 @@ export const Form = () => {
     });
   };
 
-  // Função para lidar com mudanças e aplicar máscara
   const handleChange = (setter: (value: string) => void, mask: (value: string) => string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const maskedValue = mask(event.target.value);
     setter(maskedValue);

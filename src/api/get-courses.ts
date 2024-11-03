@@ -1,4 +1,4 @@
-import axios from "axios";
+import { cogna } from "../lib/axios";
 
 interface Course {
   course: string;
@@ -10,6 +10,6 @@ interface GetCourseResponse {
 }
 
 export async function getCourse() {
-  const response = await axios.get<GetCourseResponse>('https://api.consultoriaeducacao.app.br/offers/v3/showCourses?type=undergraduate&brand=anhanguera&app=DC&partnerBrand=anhanguera');
+  const response = await cogna.get<GetCourseResponse>('offers/v3/showCourses?type=undergraduate&brand=anhanguera&app=DC&partnerBrand=anhanguera');
   return response.data; 
 }

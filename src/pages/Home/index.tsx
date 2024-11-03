@@ -1,17 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import Header from "../../components/Header";
+// import Header from "../../components/Header";
 import Courses from "../../components/Courses";
 import Steps from "../../components/Steps";
-import Footer from "../../components/Footer";
+import NewHeader from "../../components/NewHeader";
 
 export const Home = () => {
   return ( 
     <>
       <Helmet title="Faculdade Anhanguera" />
-      <Header />
+      <NewHeader />
       <Courses />
       <Steps />
-      <Footer />
 
       </>
    );
