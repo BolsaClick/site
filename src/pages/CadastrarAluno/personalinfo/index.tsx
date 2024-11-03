@@ -21,13 +21,21 @@ const formSchema = z.object({
   schoolYear: z.string().max(4, "Ano deve ter no máximo 4 dígitos"),
   rg: z.string().min(1, "RG é obrigatório"), // Novo campo para RG
   gender: z.enum(["masculino", "feminino"], { errorMap: () => ({ message: "Gênero é obrigatório" }) }), // Novo campo para gênero
+  shift: z.enum(["manha", "noite"]).optional(), 
+
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 const PersonalInfo = () => {
   const location = useLocation();
-  const { courseName, UnitId, city, state, price, unity, courseId } = location.state || {};
+  const { courseName, unitId, city, state, price, unity, courseId, modality } = location.state ;
+
+
+
+  console.log(unitId)
+
+
   const navigate = useNavigate();
   const {
     register,
@@ -36,7 +44,6 @@ const PersonalInfo = () => {
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });
-
   const onSubmit = (data: FormSchema) => {
     console.log("Form Data:", data);
     
@@ -45,10 +52,11 @@ const PersonalInfo = () => {
       ...data,
       courseName,
       courseId,
-      UnitId,
+      unitId,
       city,
       state,
       price,
+      modality,
       unity,
       gender: data.gender === "masculino" ? "M" : "F", 
       phone: data.phone.replace(/\D/g, "")
@@ -60,7 +68,7 @@ const PersonalInfo = () => {
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-gray-100">
-      <div className="max-w-2xl w-full p-8 bg-white rounded-lg shadow-lg">
+      <div className="max-w-2xl w-full p-2 lg:p-8 bg-white rounded-lg shadow-lg">
         <div className="mb-6 flex items-center justify-center flex-col gap-2">
           <h1 className="text-3xl font-bold text-center">Cadastro</h1>
           {courseName && (
@@ -74,13 +82,12 @@ const PersonalInfo = () => {
           {/* CPF Field */}
           <div className="mb-4">
             <InputMask
-             mask="999.999.999-99"
+              mask="999.999.999-99"
               type="text"
               id="cpf"
               placeholder="CPF"
               maxLength={14}
               {...register("cpf")}
-             
               className={`border border-gray-300 p-2 rounded-md w-full ${errors.cpf ? "border-red-500" : ""} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {errors.cpf && <p className="text-red-500 text-sm">{errors.cpf.message}</p>}
@@ -115,7 +122,7 @@ const PersonalInfo = () => {
               maxLength={14}
               placeholder="Whatsapp"
               {...register('phone')}
-               mask="(99)9 9999-9999"
+              mask="(99)9 9999-9999"
               className={`border border-gray-300 p-2 rounded-md w-full ${errors.phone ? 'border-red-500' : ''} focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
@@ -132,6 +139,32 @@ const PersonalInfo = () => {
             />
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
           </div>
+       {modality === 'Presencial' && (
+           <div className="mb-4">
+           <label className="block mb-2">Turno</label>
+           <div className="flex gap-4">
+             <label>
+               <input
+                 type="radio"
+                 value="manha"
+                 {...register("shift")}
+                 className="mr-2"
+               />
+               Manhã
+             </label>
+             <label>
+               <input
+                 type="radio"
+                 value="noite"
+                 {...register("shift")}
+                 className="mr-2"
+               />
+               Noite
+             </label>
+           </div>
+           {errors.shift && <p className="text-red-500 text-sm">{errors.shift.message}</p>}
+         </div>
+       )}
 
           {/* Date of Birth Field */}
           <div className="mb-4">
@@ -185,16 +218,15 @@ const PersonalInfo = () => {
             {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message}</p>}
           </div>
 
+          {/* Shift Field */}
+       
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md mt-4"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-200"
           >
-            Cadastrar
+            Próximo
           </button>
         </form>
-
-        {/* Seção para mostrar dados do curso */}
-     
       </div>
     </div>
   );

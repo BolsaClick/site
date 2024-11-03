@@ -20,12 +20,12 @@ const SuccessPage = () => {
         <h1 className="text-3xl font-bold text-center mb-4">Cadastro Realizado com Sucesso!</h1>
 
         <h2 className="text-xl font-bold mb-2">Dados do Aluno</h2>
-        <p><strong>Nome:</strong> {studentData.dadosPessoais.nome}</p>
-        <p><strong>Email:</strong> {studentData.dadosPessoais.email}</p>
-        <p><strong>Telefone:</strong> {studentData.dadosPessoais.celular}</p>
-        <p><strong>Curso:</strong> {offerData.course}</p>
-        <p><strong>Faculdade:</strong> {offerData.brand}</p>
-        <p><strong>Modalidade:</strong> {offerData.modality}</p>
+        <p><strong>Nome:</strong> {studentData?.dadosPessoais.nome}</p>
+        <p><strong>Email:</strong> {studentData?.dadosPessoais.email}</p>
+        <p><strong>Telefone:</strong> {studentData?.dadosPessoais.celular}</p>
+        <p><strong>Curso:</strong> {offerData?.course}</p>
+        <p><strong>Faculdade:</strong> {offerData?.brand}</p>
+        <p><strong>Modalidade:</strong> {offerData?.modality}</p>
         <p><strong>Valor Bolsa Click:</strong> {formatCurrency(offerData.montlyFeeTo)}</p>
         {/* Adicione mais informações conforme necessário */}
 
@@ -49,7 +49,7 @@ const SuccessPage = () => {
         <ArrowCircleRight size={20} /> <Link to={import.meta.env.LINK_WHATSAPP} className="flex items-center gap-2 border border-[#25D366] hover:border-white p-2 rounded-full text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all "><WhatsappLogo size={20} />WhatsApp</Link>
         </li>
         <li className="flex items-center gap-2">
-        <ArrowCircleRight size={20} /> <strong>Email:</strong> <a href="mailto:atendimento@vaidebolsa.com.br" className="text-blue-600 hover:underline">atendimento@bolsaclick.com.br</a>
+        <ArrowCircleRight size={20} /> <strong>Email:</strong> <a href="mailto:atendimento@bolsaclick.com.br" className="text-blue-600 hover:underline">atendimento@bolsaclick.com.br</a>
         </li>
       </ul>
     </div>

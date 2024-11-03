@@ -8,8 +8,8 @@ import Select from "react-select";
 import { useState } from "react";
 import { getCities } from "../../api/get-cities";
 import debounce from "lodash.debounce";
-import { useNavigate } from "react-router-dom"; 
-
+import { useNavigate } from "react-router-dom";
+import { RadioButton } from "primereact/radiobutton";
 
 const formSchema = z.object({
   city: z.object({
@@ -20,24 +20,21 @@ const formSchema = z.object({
     value: z.string(),
     label: z.string(),
   }).nullable().optional(),
+  modality: z.enum(["A distância", "Presencial"]).optional(),
 });
-
 
 type FormSchema = z.infer<typeof formSchema>;
 
 const Header = () => {
-  const navigate = useNavigate(); 
-
-
-
+  const navigate = useNavigate();
 
   const { data: response } = useQuery({
-    queryKey: ['courses'],
+    queryKey: ["courses"],
     queryFn: getCourse,
   });
 
   const courses = response?.data || [];
-  const courseOptions = courses.map(course => ({
+  const courseOptions = courses.map((course) => ({
     value: course.courseId,
     label: course.course,
   }));
@@ -48,40 +45,44 @@ const Header = () => {
 
   const [searchCity, setSearchCity] = useState("");
 
-
   const { data: responseCity } = useQuery({
-    queryKey: ['cities', searchCity],
+    queryKey: ["cities", searchCity],
     queryFn: () => getCities(searchCity),
     enabled: !!searchCity,
   });
-  
 
-  const cityOptions = responseCity?.data.map(city => ({
-    value: city.state,
-    label: `${city.city}`,
-  })) || [];
+  const cityOptions =
+    (responseCity?.data || []).map((city) => ({
+      value: city.state,
+      label: `${city.city}`,
+    }));
 
-  const onSubmit = (data: FormSchema) => {
-    console.log(data);
-    const cityValue = data.city;
-    navigate('/buscar-cursos', { state: { city: cityValue, course: data.course } });
-  };
+    const onSubmit = (data: any) => {
+      const cityValue = data.city;
+    
+      sessionStorage.setItem("searchData", JSON.stringify({
+        city: cityValue,
+        course: data.course,
+        modality: data.modality
+      }));
+    
+      navigate("/buscar-cursos");
+    };
 
-  // Função debounced para atualização de cidade
+
   const handleCityChange = debounce((value) => {
     setSearchCity(value);
   }, 300);
 
   return (
     <>
-
-      <div className="w-full p-10 bg-zinc-100">
-        <Container className="flex">
-          <div className="w-full pt-2 flex justify-center items-center flex-col">
-            <h1 className="text-[#172554] text-2xl font-bold">
+      <div className="w-full lg:p-10 pt-10 lg:pt-0 bg-zinc-100">
+        <Container className="flex flex-col lg:flex-row">
+          <div className="w-full pt-2 flex justify-center items-center  flex-col">
+            <h1 className="text-[#172554] text-xl  w-full lg:text-2xl  font-bold">
               Já pensou em transformar <span className="text-anhanguera-500"> seu futuro acadêmico</span> com apenas um clique?
             </h1>
-            <p className="mt-2 font-light text-zinc-400">
+            <p className="mt-2 font-light text-zinc-400 text-base">
               Na <span className="text-[#172554] font-bold">Bolsa Click </span> oferecemos até <span className="text-anhanguera-500 font-bold">80% de desconto </span> para você estudar na <span className="text-anhanguera-500 font-bold">Anhanguera</span> e em instituições parceiras, com mais de 500 cursos disponíveis. <span className="text-anhanguera-500 font-bold"> Aproveite essa oportunidade!</span>
             </p>
           </div>
@@ -94,12 +95,38 @@ const Header = () => {
       <div className="w-full bg-zinc-100 pb-20">
         <Container>
           <div className="w-full bg-white p-10 rounded-xl">
-            <div className="w-full flex items-center">
-              <button className="p-2.5 rounded-xl bg-zinc-900 text-zinc-100">
-                Graduação
-              </button>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="pt-4 w-full flex justify-between gap-6 items-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="pt-4 w-full flex flex-col gap-6 items-start">
+              <div className="flex items-center w-full flex-col lg:flex-row gap-4">
+                <Controller
+                  name="modality"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <RadioButton
+                          inputId="A distância"
+                          value="A distância"
+                          onChange={(e) => field.onChange(e.value)}
+                          checked={field.value === "A distância"}
+                          className="ring-2 ring-zinc-500 rounded-full"
+                        />
+                        <label htmlFor="ead" className="mr-4">EAD</label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <RadioButton
+                          inputId="presencial"
+                          value="Presencial"
+                          onChange={(e) => field.onChange(e.value)}
+                          checked={field.value === "Presencial"}
+                          className="ring-2 ring-zinc-500 rounded-full"
+                        />
+                        <label htmlFor="presencial">Presencial</label>
+                      </div>
+                    </>
+                  )}
+                />
+              </div>
+
               <Controller
                 name="course"
                 control={control}
@@ -107,19 +134,17 @@ const Header = () => {
                   <Select
                     {...field}
                     options={courseOptions}
-                    onChange={(selected) => {
-                      field.onChange(selected);
-                    }}
+                    onChange={(selected) => field.onChange(selected)}
                     placeholder="Selecione um curso..."
                     isClearable
                     isSearchable
                     className="w-full"
-                    noOptionsMessage={() => "Digite para encontrar um curso"} 
+                    noOptionsMessage={() => "Digite para encontrar um curso"}
                     styles={{
                       control: (base) => ({
                         ...base,
-                        minHeight: '50px',
-                        width: '100%',
+                        minHeight: "50px",
+                        width: "100%",
                       }),
                     }}
                   />
@@ -133,16 +158,8 @@ const Header = () => {
                   <Select
                     {...field}
                     options={cityOptions}
-                    onInputChange={(inputValue) => {
-                      handleCityChange(inputValue);
-                    }}
-                    onChange={(selected) => {
-                     
-                      field.onChange({
-                        value: selected?.value,
-                        label: selected?.label, 
-                      });
-                    }}
+                    onInputChange={(inputValue) => handleCityChange(inputValue)}
+                    onChange={(selected) => field.onChange(selected)}
                     placeholder="Digite uma cidade..."
                     isClearable
                     isSearchable
@@ -150,24 +167,21 @@ const Header = () => {
                     styles={{
                       control: (base) => ({
                         ...base,
-                        minHeight: '50px',
-                        width: '100%',
+                        minHeight: "50px",
+                        width: "100%",
                       }),
                     }}
-                    noOptionsMessage={() => "Digite para encontrar uma cidade"} 
+                    noOptionsMessage={() => "Digite para encontrar uma cidade"}
                   />
                 )}
               />
 
-              <button
-                className="px-6 p-2 rounded-lg bg-custom-500 text-zinc-100"
-                type="submit"
-              >
+         <div className="w-full flex items-center justify-center">
+         <button className="px-6 p-2 rounded-lg bg-custom-500 text-zinc-100" type="submit">
                 Buscar
               </button>
+         </div>
             </form>
-
-
           </div>
         </Container>
       </div>

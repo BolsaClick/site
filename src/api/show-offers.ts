@@ -59,7 +59,7 @@ interface LateEnrollmentPaymentPlan {
   amount: number;
 }
 
-export async function getCourseOffer( city: string, state: string, courseId: string, courseName: string, unitId: string) {
-  const response = await cogna.get<CourseData>(`offers/v3/showShiftOffers?brand=ANHANGUERA&modality=A+dist%C3%A2ncia&courseId=${courseId}&courseName=${courseName}&unitId=${unitId}&city=${city}&state=${state}&app=DC`);
+export async function getCourseOffer( city: string, state: string, courseId: string, courseName: string, unitId: string, modality: string) {
+  const response = await cogna.get<CourseData>(`offers/v3/showShiftOffers?brand=ANHANGUERA&modality=${modality}&courseId=${courseId}&courseName=${courseName}&unitId=${unitId}&city=${city}&state=${state}&app=DC`);
   return response.data; 
 }

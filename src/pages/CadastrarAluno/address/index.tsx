@@ -22,10 +22,10 @@ const AddressPage = () => {
     phone,
     cpf,
     courseName,
-    UnitId,
+    unitId,
     city,
     state,
- 
+    modality, 
     birthDate,
     schoolYear,
     courseId,
@@ -33,18 +33,35 @@ const AddressPage = () => {
     gender,
     password
   } = location.state || {};
-
+  
   const { register, handleSubmit, setValue, formState: { isSubmitting } } = useForm();
   const navigate = useNavigate();
   const { data: response } = useQuery({
     queryKey: ["offers"],
-    queryFn: () => getCourseOffer(city, state, courseId, courseName, UnitId),
+    queryFn: () => getCourseOffer(city, state, courseId, courseName, unitId, modality),
   });
 
-  const offerData: OfferData = response?.data.shifts["*"]?.["Faça o seu horário de estudo"] || ({} as OfferData);
+  const turno = 'Noite'
+  const modalityFunction = () => {
+    let offerData;
+  
+    if (modality === 'Presencial') {
+     
+      offerData = response?.data.shifts?.[turno]?.['Seg à Sex}'] || ({} as OfferData);
+    } else {
+ 
+      offerData = response?.data.shifts["*"]?.["Faça o seu horário de estudo"] || ({} as OfferData);
+    }
+  
+    return offerData;
+  };
+  const renderPageData = modalityFunction();
+
+  console.log(renderPageData)
 
   const onSubmit = async (data: any) => {
 
+    const offerData = modalityFunction();
 
     const studentData = {
       dadosPessoais: {
@@ -174,7 +191,7 @@ const AddressPage = () => {
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-gray-100">
-      <div className="max-w-2xl w-full p-8 bg-white rounded-lg shadow-lg">
+      <div className="max-w-2xl w-full p-2 lg:p-8 bg-white rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center mb-4">Cadastro de Endereço</h1>
         
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -262,16 +279,17 @@ const AddressPage = () => {
         </form>
 
         <div className="p-6 mt-20 bg-white rounded-lg shadow-md">
-          <p className="text-xl font-bold mb-2"><strong>Faculdade:</strong><span className="text-red-500">{' '}{offerData.brand}</span> </p>
-          <p className="text-lg mb-1"><strong>Curso:</strong> {offerData.course}</p>
-          <p className="text-lg mb-1"><strong>Modalidade:</strong> {offerData.modality}</p>
-          <p className="text-lg mb-4"><strong>Cidade:</strong> {offerData.unitCity}</p>
+          <p className="text-xl font-bold mb-2"><strong>Faculdade:</strong><span className="text-red-500">{' '}{renderPageData.brand}</span> </p>
+          <p className="text-lg mb-1"><strong>Curso:</strong> {renderPageData.course}</p>
+          <p className="text-lg mb-1"><strong>Modalidade:</strong> {renderPageData.modality}</p>
+          <p className="text-lg mb-1"><strong>Turno:</strong> {turno}</p>
+          <p className="text-lg mb-4"><strong>Cidade:</strong> {renderPageData.unitCity}</p>
 
           <div className="mb-4">
             
-            <p className="text-lg">Valor da faculdade: <strong className="text-red-500 text-lg line-through">{formatCurrency(offerData.montlyFeeFrom)}</strong></p>
+            <p className="text-lg">Valor da faculdade: <strong className="text-red-500 text-lg line-through">{formatCurrency(renderPageData.montlyFeeFrom)}</strong></p>
             <p className="text-lg">
-              Valor Bolsa Click: <span className="text-green-600 text-2xl">{formatCurrency(offerData.montlyFeeTo)}</span>
+              Valor Bolsa Click: <span className="text-green-600 text-2xl">{formatCurrency(renderPageData.montlyFeeTo)}</span>
             </p>
         
           </div>
