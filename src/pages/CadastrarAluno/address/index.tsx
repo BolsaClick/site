@@ -137,8 +137,8 @@ const AddressPage = () => {
       password: password
     }
     try {
-      await createStudent(payload)
       await createStudentCogna(studentData);
+      await createStudent(payload)
       toast.success('Cadastro realizado com sucesso!')
       navigate('/checkout/information', { state: { offerData, studentData } });
 
